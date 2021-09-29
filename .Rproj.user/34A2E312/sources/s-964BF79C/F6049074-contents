@@ -1,0 +1,27 @@
+library(httr)
+library(sf)
+library(hrbrthemes)
+library(ggsflabel)
+library(tigris)
+library(lubridate)
+
+pm25 <- read_csv("ad_viz_tile_data_pm25.csv")
+
+pm25_cl <- pm25 %>% mutate(Date = as.Date(Date, format = "%m/%d/%Y"))
+
+pm25_cl %>%
+  ggplot(aes(Date,`PM2.5 AQI Value`)) +
+  #geom_point() +
+  geom_smooth() +
+  scale_x_date(labels = scales::date_format("%b '%y"),
+               date_breaks = "4 months", date_minor_breaks = "1 month") +
+  theme_ipsum_pub()
+
+library(anomalize)
+
+
+
+pm25_cl %>%
+  time_decompose(`PM2.5 AQI Value`, merge = T, frequency = "auto") %>%
+  anomalize(remainder, alpha = 0.1) %>%
+  plot_anomaly_decomposition()

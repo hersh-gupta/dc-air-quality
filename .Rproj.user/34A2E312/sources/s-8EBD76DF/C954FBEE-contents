@@ -1,0 +1,14 @@
+
+
+dc_lines <- state_legislative_districts(state = "DC", house = "upper", year = 2020)
+
+monitor_locations %>% 
+  st_as_sf(coords = c("longitude", "latitude"),  crs = "NAD83") %>%
+  ggplot() +
+  geom_sf() +
+  geom_sf(data = dc_lines, fill = NA, lwd = .1, alpha = .1) +
+  geom_sf_text(aes(label = local_site_name), size = 3, fontface = "bold", nudge_y = -.0001) +
+  labs(title = "Local Air Quality Monitors",
+       subtitle = "in Service Since at Least Jan. 1, 2021",
+       caption = "Source: EPA AirQuality System API, Sept. 27, 2021") +
+  theme_ipsum_pub(grid = FALSE, axis = F, ticks = F, axis_text_size = 0, axis_title_size = 0)

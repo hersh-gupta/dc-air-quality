@@ -1,0 +1,7 @@
+library(anomalize)
+
+
+
+pm25_cl %>%
+time_decompose(`PM2.5 AQI Value`, merge = T, ) %>%
+  anomalize()
